@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "@fontsource/fraunces/600.css";
+@import "@fontsource/fraunces/800.css";
+@import "@fontsource/caveat/400.css";
+
+@theme {
+  --color-bordeaux: #6b1424;
+  --color-bordeaux-dark: #4e0d19;
+  --color-rose: #f4c6cf;
+  --color-rose-light: #fbe6ea;
+  --color-rose-dark: #e891a2;
+  --color-cream: #fff7f8;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-script: "Caveat", cursive;
+}
+
+body {
+  @apply bg-rose-light text-bordeaux antialiased;
+}
+
+h1, h2, h3 {
+  @apply font-display font-extrabold;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-bordeaux px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-bordeaux-dark;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-full bg-rose px-6 py-2.5 text-sm font-semibold text-bordeaux transition hover:bg-rose-dark;
+  }
+  .card {
+    @apply rounded-2xl bg-cream shadow-sm;
+  }
+}

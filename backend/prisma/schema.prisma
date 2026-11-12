@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Listes de valeurs autorisées
+enum Category {
+  SPORT
+  FOOD
+  SOLIDAIRE
+  VOYAGE
+}
+
+enum EventStatus {
+  DRAFT     // brouillon, invisible sur le site
+  UPCOMING  // "À venir"
+  OPEN      // réservations ouvertes
+  CLOSED    // terminé
+}
+
+enum ReservationStatus {
+  PENDING   // en attente de paiement
+  PAID
+  CANCELLED
+}
+
+model User {
+  id_user       Int      @id @default(autoincrement())
+  username      String?
+  email         String   @unique
+  password_hash String
+  name          String?
+  created_at    DateTime @default(now())
+
+  @@map("users")
+}
+
+model Event {
+  id_event    Int         @id @default(autoincrement())
+  title       String
+  slug        String      @unique
+  start_at    DateTime
+  end_at      DateTime?
+  price       Int         // en centimes : 3500 = 35 €
+  image       String?
+  status      EventStatus @default(DRAFT)
+  category    Category
+  description String
+  lieu        String
+  nbr_place   Int
+  level       String?
+  created_at  DateTime    @default(now())
+
+  reservations Reservation[]
+  photos       GalleryPhoto[]
+
+  @@map("event")
+}
+
+model Reservation {
+  id_reservation    Int               @id @default(autoincrement())
+  id_event          Int
+  event             Event             @relation(fields: [id_event], references: [id_event])
+  first_name        String
+  last_name         String
+  email             String
+  quantity          Int
+  price             Int               // montant total en centimes
+  status            ReservationStatus @default(PENDING)
+  stripe_session_id String?           @unique
+  created_at        DateTime          @default(now())
+
+  @@map("reservation")
+}
+
+model GalleryPhoto {
+  id_photo   Int      @id @default(autoincrement())
+  id_event   Int?                     // ? = facultatif (votre 0,1)
+  event      Event?   @relation(fields: [id_event], references: [id_event], onDelete: SetNull)
+  url        String
+  category   Category
+  position   Int      @default(0)
+  created_at DateTime @default(now())
+
+  @@map("gallery_photo")
+}
+
+model ContactMessage {
+  id_message Int      @id @default(autoincrement())
+  name       String
+  email      String
+  message    String
+  read       Boolean  @default(false)
+  created_at DateTime @default(now())
+
+  @@map("contact_message")
+}

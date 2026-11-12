@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: sudettes-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sudettes
+      POSTGRES_PASSWORD: sudettes
+      POSTGRES_DB: sudettes
+    ports:
+      - "5434:5432"
+    volumes:
+      - sudettes-data:/var/lib/postgresql/data
+
+volumes:
+  sudettes-data:
