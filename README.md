@@ -1,9 +1,9 @@
-# les sudettes
+# Les Sudettes
 
 Site des **Sudettes** : événements lifestyle, bien-être et solidaires à Marseille.
 Site vitrine, réservation en ligne et espace admin pour gérer les événements et la galerie.
 
-📋 Tâches : [tableau Trello](https://trello.com/b/A26cVd06/les-sudettes-site-web)
+Tâches : [tableau Trello](https://trello.com/b/A26cVd06/les-sudettes-site-web)
 
 ---
 
@@ -18,7 +18,7 @@ Site vitrine, réservation en ligne et espace admin pour gérer les événements
 
 ---
 
-## À installer sur votre PC 
+## À installer sur votre PC (une seule fois)
 
 | Outil | Lien | Vérifier avec |
 |---|---|---|
@@ -31,6 +31,13 @@ Site vitrine, réservation en ligne et espace admin pour gérer les événements
 > ```powershell
 > Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 > ```
+
+Configurer Git avec votre compte GitHub :
+
+```bash
+git config --global user.name "Votre Nom"
+git config --global user.email "email-de-votre-compte-github"
+```
 
 ---
 
@@ -55,7 +62,7 @@ npm rebuild
 
 # 5. Créer le fichier de config du backend
 copy backend\.env.example backend\.env      # Windows
-cp backend/.env.example backend/.env      # Mac / Linux
+# cp backend/.env.example backend/.env      # Mac / Linux
 
 # 6. Démarrer la base de données (Docker Desktop doit être ouvert)
 npm run db:up
@@ -156,101 +163,23 @@ les-sudettes/
 3. **Commit le dossier `prisma/migrations/`** avec votre code.
 
 ---
----
-
-## 📡 Routes de l'API
-
-Toutes les routes commencent par `/api`. En local, le front les appelle directement
-(ex : `fetch("/api/events")`) grâce au proxy Vite. Pas besoin d'écrire `localhost:3000`.
-
-**Légende** : 🌍 public · 🔐 admin connecté · ✅ fait · 🚧 à faire
-
-### Santé
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| GET | `/api/health` | 🌍 | Vérifie que le serveur répond → `{"ok":true}` | ✅ |
-
-### Événements
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| GET | `/api/events` | 🌍 | Liste des événements visibles (filtre : `?category=SPORT`) | 🚧 |
-| GET | `/api/events/:slug` | 🌍 | Détail d'un événement + places restantes | 🚧 |
-| GET | `/api/events/admin/all` | 🔐 | Tous les événements, brouillons compris | 🚧 |
-| POST | `/api/events` | 🔐 | Créer un événement | 🚧 |
-| PUT | `/api/events/:id` | 🔐 | Modifier un événement | 🚧 |
-| DELETE | `/api/events/:id` | 🔐 | Supprimer un événement | 🚧 |
-
-### Réservations
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| POST | `/api/reservations` | 🌍 | Créer une réservation (bloque les places 15 min) | 🚧 |
-| GET | `/api/reservations` | 🔐 | Liste de toutes les réservations | 🚧 |
-| POST | `/api/stripe/webhook` | Stripe | Confirme le paiement → réservation `PAID` | 🚧 |
-
-### Galerie
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| GET | `/api/gallery` | 🌍 | Liste des photos (filtre : `?category=FOOD`) | 🚧 |
-| POST | `/api/gallery` | 🔐 | Ajouter une photo | 🚧 |
-| DELETE | `/api/gallery/:id` | 🔐 | Supprimer une photo | 🚧 |
-
-### Contact
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| POST | `/api/contact` | 🌍 | Envoyer un message | 🚧 |
-| GET | `/api/contact` | 🔐 | Liste des messages reçus | 🚧 |
-
-### Authentification admin
-
-| Méthode | Route | Accès | Description | État |
-|---|---|---|---|---|
-| POST | `/api/auth/login` | 🌍 | Connexion (email + mot de passe) → cookie de session | 🚧 |
-| POST | `/api/auth/logout` | 🔐 | Déconnexion | 🚧 |
-| GET | `/api/auth/me` | 🔐 | Infos de l'admin connecté | 🚧 |
-
-### Exemple : créer une réservation
-
-```http
-POST /api/reservations
-Content-Type: application/json
-
-{
-  "id_event": 1,
-  "first_name": "Léa",
-  "last_name": "Martin",
-  "email": "lea@example.com",
-  "quantity": 2
-}
-```
-
-Réponses possibles :
-- `201` : réservation créée
-- `400` : données invalides
-- `409` : plus assez de places
-
----
 
 ## Routes de l'API
- 
+
 Toutes les routes commencent par `/api`. En local, le front les appelle directement
 (ex : `fetch("/api/events")`) grâce au proxy Vite, sans écrire `localhost:3000`.
- 
+
 Accès : **Public** = tout le monde, **Admin** = admin connecté.
 Quand vous ajoutez ou modifiez une route, mettez à jour ce tableau dans la même Pull Request.
- 
+
 ### Santé
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | GET | `/api/health` | Public | Vérifie que le serveur répond, renvoie `{"ok":true}` |
- 
+
 ### Événements
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | GET | `/api/events` | Public | Liste des événements visibles (filtre : `?category=SPORT`) |
@@ -259,44 +188,44 @@ Quand vous ajoutez ou modifiez une route, mettez à jour ce tableau dans la mêm
 | POST | `/api/events` | Admin | Créer un événement |
 | PUT | `/api/events/:id` | Admin | Modifier un événement |
 | DELETE | `/api/events/:id` | Admin | Supprimer un événement |
- 
+
 ### Réservations
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | POST | `/api/reservations` | Public | Créer une réservation (bloque les places 15 min) |
 | GET | `/api/reservations` | Admin | Liste de toutes les réservations |
 | POST | `/api/stripe/webhook` | Stripe | Confirme le paiement, passe la réservation en `PAID` |
- 
+
 ### Galerie
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | GET | `/api/gallery` | Public | Liste des photos (filtre : `?category=FOOD`) |
 | POST | `/api/gallery` | Admin | Ajouter une photo |
 | DELETE | `/api/gallery/:id` | Admin | Supprimer une photo |
- 
+
 ### Contact
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | POST | `/api/contact` | Public | Envoyer un message |
 | GET | `/api/contact` | Admin | Liste des messages reçus |
- 
+
 ### Authentification admin
- 
+
 | Méthode | Route | Accès | Description |
 |---|---|---|---|
 | POST | `/api/auth/login` | Public | Connexion (email + mot de passe), crée le cookie de session |
 | POST | `/api/auth/logout` | Admin | Déconnexion |
 | GET | `/api/auth/me` | Admin | Infos de l'admin connecté |
- 
+
 ### Exemple : créer une réservation
- 
+
 ```http
 POST /api/reservations
 Content-Type: application/json
- 
+
 {
   "id_event": 1,
   "first_name": "Léa",
@@ -305,12 +234,12 @@ Content-Type: application/json
   "quantity": 2
 }
 ```
- 
+
 Réponses : `201` réservation créée · `400` données invalides · `409` plus assez de places.
- 
+
 ---
 
-## Charte graphique (pas encore à jour)
+## Charte graphique
 
 Définie dans `frontend/src/index.css` et utilisable directement en classes Tailwind :
 
@@ -333,7 +262,7 @@ Définie dans `frontend/src/index.css` et utilisable directement en classes Tail
 
 ---
 
-## Branches et Pull Requests
+## Contribuer au projet
 
 **Branches**
 - `main` contient ce qui est en ligne. On ne pousse **jamais** directement dessus.
