@@ -9,7 +9,7 @@
  *
  * 🟢 You can import this file directly.
  */
-
+import { eventsRouter } from "./routes/events.js";
 import * as process from 'node:process'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
